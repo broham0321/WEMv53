@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Tournament Bracket</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title"><i class="fas fa-trophy trophy-icon"></i> Wrestling Tournament Bracket</h1>
+
+        <div class="tabs">
+            <div class="tabs-list">
+                <button class="tab active" data-tab="bracket">Bracket</button>
+                <button class="tab" data-tab="wrestlers">Wrestlers</button>
+                <button class="tab" data-tab="history">Tournament History</button>
+            </div>
+
+            <div id="bracket-tab" class="tab-content active">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Create Tournament</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="tournamentName">Tournament Name</label>
+                                <input type="text" id="tournamentName" placeholder="Enter tournament name">
+                            </div>
+                            <div class="form-group">
+                                <label for="tournamentDate">Date</label>
+                                <input type="date" id="tournamentDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="participantCount">Participants</label>
+                                <select id="participantCount">
+                                    <option value="4">4</option>
+                                    <option value="8" selected>8</option>
+                                    <option value="16">16</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="championship">Championship</label>
+                                <select id="championship">
+                                    <option value="none">None</option>
+                                    <option value="wwe-championship">WWE Championship</option>
+                                    <option value="universal-championship">Universal Championship</option>
+                                    <option value="intercontinental-championship">Intercontinental Championship</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wrestlerSelection">Select Wrestlers (0/8)</label>
+                            <div id="wrestlerSelection" class="wrestler-grid"></div>
+                        </div>
+
+                        <div class="actions">
+                            <button id="clearSelection" class="btn-outline" disabled>Clear Selection</button>
+                            <button id="createTournament" class="btn-primary" disabled>Create Tournament</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tournamentBracketContainer" class="mt-6" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <button id="backToTournaments" class="btn-outline">
+                                <i class="fas fa-arrow-left"></i> Back to Tournaments
+                            </button>
+                            <h2 id="tournamentTitle" class="card-title">Tournament Name</h2>
+                        </div>
+                        <div class="card-content">
+                            <div id="tournamentBracket" class="tournament-bracket"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tournamentListCard" class="card mt-6">
+                    <div class="card-header">
+                        <h2 class="card-title">Tournaments</h2>
+                    </div>
+                    <div class="card-content">
+                        <div id="tournamentList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="wrestlers-tab" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="fas fa-user"></i> Wrestler Database</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="grid-2">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Add New Wrestler</h3>
+                                </div>
+                                <div class="card-content">
+                                    <div class="form-group">
+                                        <label for="wrestlerName">Name</label>
+                                        <input type="text" id="wrestlerName" placeholder="Enter wrestler name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="wrestlerAlignment">Alignment</label>
+                                        <select id="wrestlerAlignment">
+                                            <option value="Face">Face</option>
+                                            <option value="Heel">Heel</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="wrestlerWeightClass">Weight Class</label>
+                                        <select id="wrestlerWeightClass">
+                                            <option value="Heavyweight">Heavyweight</option>
+                                            <option value="Middleweight">Middleweight</option>
+                                            <option value="Lightweight">Lightweight</option>
+                                        </select>
+                                    </div>
+                                    <button id="addWrestler" class="btn-primary full-width">
+                                        <i class="fas fa-plus"></i> Add Wrestler
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Wrestler Statistics</h3>
+                                </div>
+                                <div class="card-content">
+                                    <div id="wrestlerStats">
+                                        <p>Total Wrestlers: <span id="totalWrestlers">0</span></p>
+                                        <p>Face: <span id="faceCount">0</span></p>
+                                        <p>Heel: <span id="heelCount">0</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Weight Class</th>
+                                    <th>Alignment</th>
+                                    <th>Record (W-L)</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="wrestlersList"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="history-tab" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="fas fa-history"></i> Tournament History</h2>
+                    </div>
+                    <div class="card-content">
+                        <div id="tournamentHistory"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editWrestlerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Wrestler</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editWrestlerId">
+                <div class="form-group">
+                    <label for="editWrestlerName">Name</label>
+                    <input type="text" id="editWrestlerName" placeholder="Enter wrestler name">
+                </div>
+                <div class="form-group">
+                    <label for="editWrestlerAlignment">Alignment</label>
+                    <select id="editWrestlerAlignment">
+                        <option value="Face">Face</option>
+                        <option value="Heel">Heel</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editWrestlerWeightClass">Weight Class</label>
+                    <select id="editWrestlerWeightClass">
+                        <option value="Heavyweight">Heavyweight</option>
+                        <option value="Middleweight">Middleweight</option>
+                        <option value="Lightweight">Lightweight</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Record</label>
+                    <div class="record-inputs">
+                        <div>
+                            <label for="editWrestlerWins">Wins</label>
+                            <input type="number" id="editWrestlerWins" min="0">
+                        </div>
+                        <div>
+                            <label for="editWrestlerLosses">Losses</label>
+                            <input type="number" id="editWrestlerLosses" min="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveWrestlerEdit" class="btn-primary">Save Changes</button>
+                <button class="btn-outline close-modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

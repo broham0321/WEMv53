@@ -1,0 +1,26 @@
+version: 1.0
+deploy:
+  # Configuration for the build environment
+  runtime:
+    nodejs:
+      version: 16.x
+      environment:
+        PORT: 8080
+  # Build command to execute
+  build:
+    command: npm run build
+    post:
+      # Set proper permissions after build
+      - find .next -type d -exec chmod 755 {} \;
+      - find .next -type f -exec chmod 644 {} \;
+      - chmod -R 755 public
+      - chmod 755 .htaccess
+  # Directory to deploy (output of the build)
+  dist:
+    path: .next
+  # Environment variables for the build
+  environment:
+    vars:
+      - name: NODE_ENV
+        value: production
+

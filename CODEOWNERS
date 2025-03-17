@@ -1,0 +1,6 @@
+# These owners will be the default owners for everything in the repo
+* @your-github-username
+
+# You can also specify different owners for different directories
+# /docs/ @docs-team
+
